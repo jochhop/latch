@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<config>
+	  <tabs>
+		<joc translate="label" module="latch">
+            <label>Joc Extensions</label>
+            <sort_order>0</sort_order>
+        </joc>
+	  </tabs>
+	  <sections>
+		<latch  translate="label" module="latch">                    
+		<label>Latch</label>
+		<tab>joc</tab>
+		<frontend_type>text</frontend_type>
+		<sort_order>0</sort_order>
+		<show_in_default>1</show_in_default>
+		<show_in_website>1</show_in_website>
+		<show_in_store>1</show_in_store>            
+					<groups>
+				      <api_settings translate="label"> 
+					  <label>Api Settings</label>
+					  <frontend_type>text</frontend_type>
+					  <sort_order>0</sort_order>
+					  <show_in_default>1</show_in_default>
+					  <show_in_website>1</show_in_website>
+					  <show_in_store>1</show_in_store>
+				       <fields>
+                          <app_id translate="label">
+                            <label>Application ID</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                          </app_id>
+                          <app_secret_key translate="label">
+                            <label>Secret Key</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                          </app_secret_key>
+                          <app_api_url translate="label">
+                            <label>API Url</label>
+							<frontend_type>text</frontend_type>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>By default: https://latch.elevenpaths.com</comment>
+                          </app_api_url>
+					   </fields>
+					   </api_settings>
+				      <general translate="label"> 
+					  <label>General Settings</label>
+					  <frontend_type>text</frontend_type>
+					  <sort_order>0</sort_order>
+					  <show_in_default>1</show_in_default>
+					  <show_in_website>1</show_in_website>
+					  <show_in_store>1</show_in_store>
+				       <fields>
+                          <enable translate="label">
+                            <label>Enable Latch</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                          </enable>
+                          <enable_popup translate="label">
+                            <label>Enable Latch Popup</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+							<comment>By enabling this a pop up will appear after user log in for ask about use Latch</comment>
+                          </enable_popup>
+					   </fields>
+					   </general>
+					</groups>
+		</latch>
+	  </sections>
+</config>
