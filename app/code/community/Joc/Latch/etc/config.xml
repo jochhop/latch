@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Joc_Latch>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </Joc_Latch>
     </modules>
     <global>
@@ -82,6 +82,13 @@
         </events>
     </frontend>
     <adminhtml>
+        <layout>
+            <updates>
+                <latch>
+                    <file>latch/latch.xml</file>
+                </latch>
+            </updates>
+        </layout>
         <translate>
             <modules>
                 <Joc_Latch>
@@ -91,5 +98,23 @@
                 </Joc_Latch>
             </modules>
         </translate>
+        <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <latch_admin_login>
+                        <class>latch/adminhtml_observer</class>
+                        <method>adminLogin</method>
+                    </latch_admin_login>
+                </observers>
+            </admin_session_user_login_success>     
+            <admin_user_save_after>
+                <observers>
+                    <latch_admin_save>
+                        <class>latch/adminhtml_observer</class>
+                        <method>saveAdmin</method>
+                    </latch_admin_save>
+                </observers>
+            </admin_user_save_after>
+        </events>
     </adminhtml>
 </config> 

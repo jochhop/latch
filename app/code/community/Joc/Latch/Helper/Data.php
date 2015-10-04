@@ -2,6 +2,8 @@
 
 class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
     
+    const LATCH_ENABLED = 'latch/general/enable';
+    
     const LATCH_APPLICATION_ID_PATH = 'latch/api_settings/app_id';
     const LATCH_SECRET_KEY_PATH     = 'latch/api_settings/app_secret_key';
     const LATCH_API_URL_PATH        = 'latch/api_settings/app_api_url';
@@ -18,6 +20,10 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
         return $this->_getConfig(self::LATCH_API_URL_PATH);
     }
     
+    public function getIfEnabled() {
+        return $this->_getConfig(self::LATCH_ENABLED);
+    }
+    
     protected function _getConfig($path) {
         return Mage::getStoreConfig($path);
     }
@@ -25,13 +31,11 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * Invoke Latch library for pair account with Latch app
      * 
-     * @param string $appId
-     * @param string $appSecret
      * @param string $token
-     * @param string $apiUrl
+     * @param int $user Administrator user object
      * @return array with status and message of the api response
      */
-    public function pair($token) {
+    public function pair($token, $user = null) {
         $appId = $this->getApplicationId();
         $appSecret = $this->getSecretKey();
         $apiUrl = $this->getApiUrl();
@@ -53,12 +57,17 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
             }
 
             if(!empty($accountId)) {
-                /* @var $customer Mage_Customer_Model_Customer */
-                $customer = Mage::getSingleton('customer/session')->getCustomer();
-                $customer->setData('latch_id', $accountId);
-
+                if($user) {
+                    /* @var $object Mage_Admin_Model_User */
+                    $object = $user;
+                } else {
+                    /* @var $object Mage_Customer_Model_Customer */
+                    $object = Mage::getSingleton('customer/session')->getCustomer();
+                }
+                
                 try {
-                    $customer->save();
+                    $object->setData('latch_id', $accountId);
+                    $object->save();
                     return array("status" => 1, "message" => $this->__("Your account was linked with Latch successfully."));
                 } catch (Exception $ex) {
                     return array("status" => 0, "message" => $this->__("Couldn't link the given token with Latch: ") . $this->__($ex->getMessage()));
@@ -76,15 +85,15 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
     /**
      * Unpair customer account with Latch
      * 
-     * @param string $unlinkLatch
+     * @param Mage_Admin_Model_User $user
      * @return array
      */
-    public function unpair($unlinkLatch = null) {
+    public function unpair($user = null) {
         $appId = $this->getApplicationId();
         $appSecret = $this->getSecretKey();
         $apiUrl = $this->getApiUrl();
         
-        if($unlinkLatch && !empty($appId) && !empty($appSecret)) {
+        if(!empty($appId) && !empty($appSecret)) {
             require_once(Mage::getBaseDir('lib') . '/Latch/latch.php');
             
             if($apiUrl) {
@@ -93,12 +102,25 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
                 $api = new Latch($appId, $appSecret);
             }
 
-            /* @var $customer Mage_Customer_Model_Customer */
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-            $latch_id = $customer->getData('latch_id');
-            $apiResponse = $api->unpair($latch_id);
+            if($user) {
+                /* @var $object Mage_Admin_Model_User */
+                $object = Mage::getModel('admin/user')->load($user->getId());
+            } else {
+                /* @var $object Mage_Customer_Model_Customer */
+                $object = Mage::getSingleton('customer/session')->getCustomer();
+            }
+
+            $latchId = $object->getData('latch_id');
+            $apiResponse = $api->unpair($latchId);
             
-            if($apiResponse->getError() == NULL) {
+            if($apiResponse->getError() == NULL) {                
+                try {
+                    $object->setData('latch_id', '');
+                    $object->save();
+                } catch (Exception $ex) {
+                    return array("status" => 0, "message" => $this->__("Couldn't unlink with Latch: ") . $this->__($ex->getMessage()));
+                }
+                
                 return array("status" => 1, "message" => $this->__("Your account was unlinked with Latch successfully."));
             } else {
                 return array("status" => 0, "message" => $this->__("Couldn't unlink your account with Latch: ") . $this->__($apiResponse->getError()->getMessage()));

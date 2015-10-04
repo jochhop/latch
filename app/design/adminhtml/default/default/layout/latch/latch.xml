@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_permissions_user_edit>
+        <reference name="adminhtml.permissions.user.edit.tabs">
+            <action method="addTab" ifconfig="latch/general/enable">
+                <name>latch_tab</name>
+                <block>latch/adminhtml_permissions_user_edit_tab</block>
+            </action>
+        </reference>
+    </adminhtml_permissions_user_edit>
+</layout>

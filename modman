@@ -2,6 +2,7 @@
 /app/locale/en_US/Joc_Latch.csv /app/locale/en_US/Joc_Latch.csv
 /app/locale/es_ES/Joc_Latch.csv /app/locale/es_ES/Joc_Latch.csv
 /app/locale/pl_PL/Joc_Latch.csv /app/locale/pl_PL/Joc_Latch.csv
+/app/design/adminhtml/default/default/layout/latch /app/design/adminhtml/default/default/layout/latch
 /app/design/frontend/base/default/layout/latch /app/design/frontend/base/default/layout/latch
 /app/design/frontend/base/default/template/latch /app/design/frontend/base/default/template/latch
 /app/etc/modules/Joc_Latch.xml /app/etc/modules/Joc_Latch.xml

@@ -47,14 +47,41 @@ class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
         return;
     }
     
+    /**
+     * Unlink an account with Latch
+     * 
+     * @return void
+     */
     public function unlinkaccountAction() {
+        if(!$this->_checkIsLoggedIn()) {
+            $this->norouteAction();
+            return;
+        }
         
+        if($this->getRequest()->getPost('unlink_latch') == 1) {
+            /* @var $latchHelper Joc_Latch_Helper_Data */
+            $latchHelper = Mage::helper('latch');
+            $result = $latchHelper->unpair();
+
+            if(array($result)) {
+                if($result['status'] == 1){
+                    Mage::getSingleton('core/session')->addSuccess($result['message']);
+                }else{
+                    Mage::getSingleton('core/session')->addError($result['message']);
+                }
+            } else {
+                Mage::getSingleton('core/session')->addNotice($result);
+            }
+        }
+        
+        $this->_redirect('*/*/index');
+        return;
     }
     
     /**
      * Check if customer is logged in
      * 
-     * @return boolean
+     * @return bool
      */
     protected function _checkIsLoggedIn() {
         return Mage::getSingleton('customer/session')->isLoggedIn();
