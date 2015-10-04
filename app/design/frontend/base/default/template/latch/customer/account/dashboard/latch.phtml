@@ -1,29 +1,57 @@
 <?php
 /* @var $this Joc_Latch_Block_Index */
+$customer = $this->getCurrentCustomer();
+$latchId = $customer->getLatchId();
+
+if(empty($latchId)):
 ?>
 <div class="page-title">
     <h1><?php echo $this->__('Latch Settings') ?></h1>
 </div>
 <?php echo $this->getMessagesBlock()->toHtml() ?>
-<form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="form-validate">
-    <div class="fieldset">
-        <h2 class="legend"><?php echo $this->__('Link Your Account With Latch') ?></h2>
-        <p class="required"><?php echo $this->__('* Required Fields') ?></p>
-        <ul class="form-list">
-            <li>
-                <label for="latch_token" class="required"><em>*</em><?php echo $this->__('Latch Token') ?></label>
-                <div class="input-box">
-                    <input type="text" title="<?php echo $this->__('Latch Token') ?>" class="input-text required-entry" name="latch_token" id="latch_token" />
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="buttons-set">
-        <button type="submit" title="<?php echo $this->__('Save Token') ?>" class="button left"><span><span><?php echo $this->__('Save Token') ?></span></span></button>
-    </div>
-</form>
-<script type="text/javascript">
-//<![CDATA[
-    var dataForm = new VarienForm('form-validate');
-//]]>
-</script>
+    <form action="<?php echo $this->getFormActionUrl() ?>" method="post" id="form-validate">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Link Your Account With Latch') ?></h2>
+            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <ul class="form-list">
+                <li>
+                    <label for="latch_token" class="required"><em>*</em><?php echo $this->__('Latch Token') ?></label>
+                    <div class="input-box">
+                        <input type="text" title="<?php echo $this->__('Latch Token') ?>" class="input-text required-entry" name="latch_token" id="latch_token" />
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="buttons-set">
+            <button type="submit" title="<?php echo $this->__('Save Token') ?>" class="button left"><span><span><?php echo $this->__('Save Token') ?></span></span></button>
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var dataForm = new VarienForm('form-validate');
+    //]]>
+    </script>
+<?php else: ?>
+    <form action="<?php echo $this->getFormUnlinkActionUrl() ?>" method="post" id="unlink-latch-form">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Your account is already linked with Latch.') ?></h2>
+            <p>
+            <?php echo $this->__("If you don't want to use more Latch account, you will be able to unlink your account by selecting the following checkbox and confirm your action.") ?>
+            </p>
+            <ul class="form-list">
+                <li>
+                    <label for="unlink_latch"><?php echo $this->__('Latch token') ?></label>
+                    <input type="checkbox" title="<?php echo $this->__('Unlink account') ?>" name="unlink_latch" id="unlink_latch" value="1" class="required-entry" />
+                </li>
+            </ul>
+        </div>
+        <div class="buttons-set">
+            <button type="submit" title="<?php echo $this->__('Confirm action') ?>" class="button left"><span><span><?php echo $this->__('Confirm action') ?></span></span></button>
+        </div>
+    </form>
+    <script type="text/javascript">
+    //<![CDATA[
+        var dataForm = new VarienForm('unlink-latch-form');
+    //]]>
+    </script>
+<?php endif;

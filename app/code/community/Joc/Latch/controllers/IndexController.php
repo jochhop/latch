@@ -2,6 +2,11 @@
 
 class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
     
+    /**
+     * Render Latch customer dashboard form
+     * 
+     * @return void
+     */
     public function indexAction() {
         if(!$this->_checkIsLoggedIn()) {
             $this->norouteAction();
@@ -12,6 +17,11 @@ class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
         $this->renderLayout();
     }
     
+    /**
+     * Save token and pair account with Latch
+     * 
+     * @return void
+     */
     public function savetokenAction() {
         if(!$this->_checkIsLoggedIn() || !$this->getRequest()->getPost('latch_token', false)) {
             $this->norouteAction();
@@ -20,42 +30,32 @@ class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
         
         /* @var $latchHelper Joc_Latch_Helper_Data */
         $latchHelper = Mage::helper('latch');
-        $appId = $latchHelper->getApplicationId();
-        $appSecret = $latchHelper->getSecretKey();
-        $apiUrl = $latchHelper->getApiUrl();
         $token = $this->getRequest()->getPost('latch_token');
+        $result = $latchHelper->pair($token);
         
-        if($apiUrl){
-            $api = new Latch($appId, $appSecret, $apiUrl);
-        }else{
-            $api = new Latch($appId, $appSecret);
-        }
-        
-        $apiResponse = $api->pair($token);
-        $responseData = $apiResponse->getData();
-        
-        if(!empty($responseData)) {
-                $accountId = $responseData->{"accountId"};
-        }
-        if(!empty($accountId)) {
-            $customer = Mage::getSingleton('customer/session')->getCustomer();
-            $customer->setData('latch_id', $accountId);
-            
-            try {
-                $customer->save();
-            } catch (Exception $ex) {
-                Mage::getSingleton('core/session')->addError($latchHelper->__("Couldn't link the given token with Latch: ") . $latchHelper->__($ex->getMessage()));
-                $this->_redirect('*/*/index');
-                return;
+        if(array($result)) {
+            if($result['status']){
+                Mage::getSingleton('core/session')->addSuccess($result['message']);
+            }else{
+                Mage::getSingleton('core/session')->addError($result['message']);
             }
-        } elseif ($apiResponse->getError() == NULL) {
-            Mage::getSingleton('core/session')->addError($latchHelper->__("Latch pairing error: Cannot connect to the server. Please, try again later."));
         } else {
-            Mage::getSingleton('core/session')->addError($latchHelper->__("Couldn't link the given token with Latch: ") . $latchHelper->__($apiResponse->getError()->getMessage()));
+            Mage::getSingleton('core/session')->addError($result);
         }
-					
+        
+        $this->_redirect('*/*/index');
+        return;
     }
     
+    public function unlinkaccountAction() {
+        
+    }
+    
+    /**
+     * Check if customer is logged in
+     * 
+     * @return boolean
+     */
     protected function _checkIsLoggedIn() {
         return Mage::getSingleton('customer/session')->isLoggedIn();
     }

@@ -70,6 +70,16 @@
                 </args>
             </latch>
         </routers>
+        <events>
+            <customer_login>
+                <observers>
+                    <latch_before_login>
+                        <class>latch/observer</class>
+                        <method>customerLogin</method>
+                    </latch_before_login>
+                </observers>
+            </customer_login>     
+        </events>
     </frontend>
     <adminhtml>
         <translate>

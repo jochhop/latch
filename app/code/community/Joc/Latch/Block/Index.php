@@ -18,4 +18,22 @@ class Joc_Latch_Block_Index extends Mage_Core_Block_Template {
     public function getFormActionUrl() {
         return $this->getUrl('*/*/savetoken');
     }
+    
+    /**
+     * Return the form unlink action url
+     * 
+     * @return string
+     */
+    public function getFormUnlinkActionUrl() {
+        return $this->getUrl('*/*/unlinkaccount');
+    }
+    
+    /**
+     * Get current customer
+     * 
+     * @return Mage_Customer_Model_Customer
+     */
+    public function getCurrentCustomer() {
+        return Mage::getSingleton('customer/session')->getCustomer();
+    }
 }
