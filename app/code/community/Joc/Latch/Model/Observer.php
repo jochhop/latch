@@ -10,8 +10,9 @@ class Joc_Latch_Model_Observer {
     public function customerLogin($observer) {
         $customer = $observer->getEvent()->getCustomer();
         $session = Mage::getSingleton('customer/session');
-
-        if ($latchId = $customer->getData('latch_id')) {
+        $latchId = $customer->getData('latch_id');
+        
+        if ($latchId) {
             /* @var $latchHelper Joc_Latch_Helper_Data */
             $latchHelper = Mage::helper('latch');
             $latchEnabled = $latchHelper->getIfLatchEnabled($latchId, $customer->getId());

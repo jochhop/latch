@@ -31,7 +31,7 @@ class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
         /* @var $latchHelper Joc_Latch_Helper_Data */
         $latchHelper = Mage::helper('latch');
         $token = $this->getRequest()->getPost('latch_token');
-        $result = $latchHelper->pair($token);
+        $result = $latchHelper->pairCustomer($token);
         
         if(array($result)) {
             if($result['status']){
@@ -61,7 +61,7 @@ class Joc_Latch_IndexController extends Mage_Core_Controller_Front_Action {
         if($this->getRequest()->getPost('unlink_latch') == 1) {
             /* @var $latchHelper Joc_Latch_Helper_Data */
             $latchHelper = Mage::helper('latch');
-            $result = $latchHelper->unpair();
+            $result = $latchHelper->unpairCustomer();
 
             if(array($result)) {
                 if($result['status'] == 1){

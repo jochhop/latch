@@ -43,6 +43,16 @@
                 </connection>
             </latch_read>
         </resources>
+        <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <latch_admin_login>
+                        <class>latch/adminhtml_observer</class>
+                        <method>adminLogin</method>
+                    </latch_admin_login>
+                </observers>
+            </admin_session_user_login_success>  
+        </events>
     </global>
     <frontend>
         <translate>
@@ -74,6 +84,7 @@
             <customer_login>
                 <observers>
                     <latch_before_login>
+                        <type>singleton</type>
                         <class>latch/observer</class>
                         <method>customerLogin</method>
                     </latch_before_login>
@@ -98,23 +109,16 @@
                 </Joc_Latch>
             </modules>
         </translate>
-        <events>
-            <admin_session_user_login_success>
-                <observers>
-                    <latch_admin_login>
-                        <class>latch/adminhtml_observer</class>
-                        <method>adminLogin</method>
-                    </latch_admin_login>
-                </observers>
-            </admin_session_user_login_success>     
-            <admin_user_save_after>
+        <events>   
+            <admin_user_save_before>
                 <observers>
                     <latch_admin_save>
+                        <type>singleton</type>
                         <class>latch/adminhtml_observer</class>
                         <method>saveAdmin</method>
                     </latch_admin_save>
                 </observers>
-            </admin_user_save_after>
+            </admin_user_save_before>
         </events>
     </adminhtml>
 </config> 

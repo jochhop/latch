@@ -3,7 +3,7 @@
 class Joc_Latch_Model_Adminhtml_Observer {
     
     /**
-     * 
+     * Observer which fires Latch pair/unpair when admin user is saved
      */
     public function saveAdmin($observer) {
         $user = $observer->getEvent()->getObject();
@@ -12,7 +12,7 @@ class Joc_Latch_Model_Adminhtml_Observer {
         if($token) {
             /* @var $latchHelper Joc_Latch_Helper_Data */
             $latchHelper = Mage::helper('latch');
-            $result = $latchHelper->pair($token, $user);
+            $result = $latchHelper->pairAdmin($token, $user);
             
             if($result['status'] == 1) {
                 Mage::getSingleton('core/session')->addSuccess($result['message']); 
@@ -25,7 +25,7 @@ class Joc_Latch_Model_Adminhtml_Observer {
             if($unlinkAccount == 1){
                 /* @var $latchHelper Joc_Latch_Helper_Data */
                 $latchHelper = Mage::helper('latch');
-                $result = $latchHelper->unpair($user);
+                $result = $latchHelper->unpairAdmin($user);
 
                 if($result['status'] == 1) {
                     Mage::getSingleton('core/session')->addSuccess($result['message']); 
@@ -37,28 +37,34 @@ class Joc_Latch_Model_Adminhtml_Observer {
     }
     
     /**
-     * 
-     * @param type $observer
-     * @return void
+     * Observer which fires Latch detection on admin log in
      */
     public function adminLogin($observer) {
-//        $customer = $observer->getEvent()->getCustomer();
-//        $session = Mage::getSingleton('customer/session');
-//
-//        if ($latchId = $customer->getData('latch_id')) {
-//            /* @var $latchHelper Joc_Latch_Helper_Data */
-//            $latchHelper = Mage::helper('latch');
-//            $latchEnabled = $latchHelper->getIfLatchEnabled($latchId, $customer->getId());
-//
-//            if($latchEnabled['status'] == 1) {
-//                $session->setId(null)
-//                    ->setCustomerGroupId(Mage_Customer_Model_Group::NOT_LOGGED_IN_ID)
-//                    ->getCookie()->delete('customer');
-//                Mage::getSingleton('core/session')->addError($latchEnabled['message']);
-//            }
-//            
-//            return;
-//        }
+        $user = $observer->getEvent()->getUser();
+
+        if($user) {
+            /* @var $user Mage_Admin_Model_User */
+            $adminModel = Mage::getModel('admin/user');
+
+            if ($latchId = $user->getData('latch_id')) {
+                /* @var $latchHelper Joc_Latch_Helper_Data */
+                $latchHelper = Mage::helper('latch');
+                $latchEnabled = $latchHelper->getIfAdminLatchEnabled($latchId, $user);
+
+                if($latchEnabled['status'] == 1) {
+                    /* @var $adminSession Mage_Admin_Model_Session */
+                    $adminSession = Mage::getSingleton('admin/session');
+                    $adminSession->unsetAll();
+                    $adminSession->getCookie()->delete($adminSession->getSessionName());
+                    Mage::getSingleton('core/session')->addError("Invalid User Name or Password");
+
+                    Mage::app()->getResponse()->setRedirect('*');
+                    return;
+                }
+            }
+        }
+        
+        return $this;
     }
 
 }
