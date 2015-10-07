@@ -4,7 +4,7 @@
         <Joc_Latch>
             <active>true</active>
             <codePool>community</codePool>
-            <version>0.2.0</version>
+            <version>1.0.0</version>
         </Joc_Latch>
     </modules>
 </config>
