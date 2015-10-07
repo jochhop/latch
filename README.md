@@ -1,0 +1,1 @@
+Latch Integration with Magento CE
