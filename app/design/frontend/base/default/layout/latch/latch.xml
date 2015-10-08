@@ -2,7 +2,7 @@
 <layout version="0.1.0">
     <customer_account>
         <reference name="customer_account_navigation">
-            <action method="addLink">
+            <action method="addLink" translate="label">
                 <name>latch</name>
                 <path>latch/index</path>
                 <label>Latch Settings</label>

@@ -193,15 +193,15 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
                 if($apiResponse->getError() == NULL) { 
                     $user->setData('latch_id', '');
                     
-                    return array("status" => 1, "message" => $this->__("Your account was unlinked with Latch successfully."));
+                    return array("status" => 1, "message" => $this->__("The account was unlinked with Latch successfully."));
                 } else {
-                    return array("status" => 0, "message" => $this->__("Couldn't unlink your account with Latch: ") . $this->__($apiResponse->getError()->getMessage()));
+                    return array("status" => 0, "message" => $this->__("Couldn't unlink the account with Latch: ") . $this->__($apiResponse->getError()->getMessage()));
                 }
             } else {
                 return array("status" => 0, "message" => $this->__("There is no Latch Id to unlink."));
             }
         } else {
-            return array("status" => 0, "message" => $this->__("Your account wasn't unlinked with Latch. Please try again later."));
+            return array("status" => 0, "message" => $this->__("The account wasn't unlinked with Latch. Please try again later."));
         }
     }
     
@@ -252,7 +252,7 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
             if (!empty($responseData) && $responseData->{"operations"}->{$appId}->{"status"} === "on") {
                 return array("status" => 0, "message" => "");
             } else {
-                return array("status" => 1, "message" => "Invalid email or password");
+                return array("status" => 1, "message" => $this->__("Invalid login or password"));
             }
         }
     }
@@ -303,7 +303,7 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
             if (!empty($responseData) && $responseData->{"operations"}->{$appId}->{"status"} === "on") {
                 return array("status" => 0, "message" => "");
             } else {
-                return array("status" => 1, "message" => "Invalid email or password");
+                return array("status" => 1, "message" => $this->__("Invalid login or password"));
             }
         }
     }
