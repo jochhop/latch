@@ -17,6 +17,7 @@ class Joc_Latch_Block_Adminhtml_Permissions_User_Edit_Tab
      */
     protected function _initForm() {
         $userId = $this->getRequest()->getParam('user_id');
+        /* @var $user Mage_Admin_Model_User */
         $user = Mage::getModel('admin/user')->load($userId);
         $form = new Varien_Data_Form();
 

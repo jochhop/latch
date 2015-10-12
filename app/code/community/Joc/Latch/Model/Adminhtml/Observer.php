@@ -8,7 +8,13 @@ class Joc_Latch_Model_Adminhtml_Observer {
     public function saveAdmin($observer) {
         $user = $observer->getEvent()->getObject();
         $token = Mage::app()->getRequest()->getPost('token', false);
-
+        $mustSave = Mage::getSingleton('core/session')->getAdminMustSave();
+        
+        if($mustSave){
+            Mage::getSingleton('core/session')->unsAdminMustSave();
+            return;
+        }
+        
         if($token) {
             /* @var $latchHelper Joc_Latch_Helper_Data */
             $latchHelper = Mage::helper('latch');
