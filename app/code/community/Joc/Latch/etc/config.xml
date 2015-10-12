@@ -120,5 +120,31 @@
                 </observers>
             </admin_user_save_before>
         </events>
+        <menu>
+            <system>
+                <children>
+                    <myaccount>
+                        <children>
+                            <latch translate="title" module="latch">
+                                <title>Latch Settings</title>
+                                <sort_order>1</sort_order>
+                                <action>adminhtml/latch/myaccount</action>
+                            </latch>
+                        </children>
+                    </myaccount>
+                </children>
+            </system>
+        </menu>
     </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <latch before="Mage_Adminhtml">Joc_Latch_Adminhtml</latch>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config> 

@@ -108,6 +108,12 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
                 if($user) {
                     /* @var $user Mage_Admin_Model_User */
                     $user->setData('latch_id', $accountId);
+                    $mustSave = Mage::getSingleton('core/session')->getAdminMustSave();
+                    
+                    if($mustSave) {
+                        $user->save();
+                    }
+                    
                     return array("status" => 1, "message" => $this->__("The account was linked with Latch successfully."));
                 } else {
                     return array("status" => 0, "message" => $this->__("Can't link non admin user with Latch."));
@@ -192,6 +198,12 @@ class Joc_Latch_Helper_Data extends Mage_Core_Helper_Abstract {
             if($latchId) {
                 if($apiResponse->getError() == NULL) { 
                     $user->setData('latch_id', '');
+                    
+                    $mustSave = Mage::getSingleton('core/session')->getAdminMustSave();
+                    
+                    if($mustSave) {
+                        $user->save();
+                    }
                     
                     return array("status" => 1, "message" => $this->__("The account was unlinked with Latch successfully."));
                 } else {

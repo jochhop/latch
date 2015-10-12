@@ -8,4 +8,10 @@
             </action>
         </reference>
     </adminhtml_permissions_user_edit>
+    
+    <adminhtml_latch_myaccount>
+        <reference name="content">
+            <block type="latch/adminhtml_latch_edit" name="adminhtml_latch" />
+        </reference>
+    </adminhtml_latch_myaccount>
 </layout>
