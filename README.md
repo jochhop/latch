@@ -24,4 +24,4 @@
 
 #### Languages and support: ####
 * The extension already provides english and spanish languages and polish is on the way.
-* If you find a bug or have a suggestion please write me here: joc.latch.magento@gmail.com
+* If you find a bug or have a suggestion please write me here: joc.latch.magento@gmail.com or by my twitter account @joc_hhop
